@@ -20,6 +20,14 @@ const userViewSchema = mongoose.Schema({
     }
 })
 
+/**
+ * Create Indexes
+ */
+// index to count documents over a date range
+userViewSchema.index({ "ProductId": 1, "ViewDate": 1})
+// index to count unique user visits over a date range
+userViewSchema.index({ "ProductId": 1, "UserId": 1, "ViewDate": 1})
+
 var UserView = mongoose.model('userView', userViewSchema)
 
 /**
@@ -38,11 +46,11 @@ exports.getVisitCount = function(productId, fromDate, toDate, countUnique = 0) {
         }
         // get docs
         if (countUnique == 1) {
-            UserView.distinct('UserId', query, function (err, result) {
-                    if (err) reject(err);
-                    var count = result.length
-                    resolve(count)
-                })
+            UserView.distinct('UserId', query).exec((err, result)  => {
+                if (err) reject(err);
+                var count = result.length
+                resolve(count)
+            })
         } else {
             // get count of total visits
             UserView
