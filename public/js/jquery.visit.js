@@ -105,7 +105,7 @@ $(document).ready(function() {
 
     // handle form submission
     function submitFormHandler() {
-        console.log("Submit button clicked!")
+        
         let productId = $('#productId').val()
         let fromDate = state.fromDate
         let toDate = state.toDate
@@ -122,6 +122,9 @@ $(document).ready(function() {
             alert("Please provide a valid to date")
             return
         }
+
+        $('#showTotalVisitorCount').html("Loading...")
+        $('#showUniqueVisitorCount').html("Loading...")
 
         // Fetch count of total visits
         fetchResults(productId, fromDate, toDate, 0)
